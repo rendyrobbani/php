@@ -1,0 +1,29 @@
+{
+	"name": "rendyrobbani/php",
+	"description": "Framework for PHP",
+	"type": "library",
+	"license": "proprietary",
+	"authors": [
+		{
+			"name": "rendyrobbani",
+			"email": "rendyrobbani17@gmail.com"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"RendyRobbani\\PHP\\": "src/main/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"RendyRobbani\\PHP\\": "src/test/"
+		}
+	},
+	"require": {
+		"php": ">=8.5",
+		"ext-pdo": "*"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^13.3"
+	}
+}
