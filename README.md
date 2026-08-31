@@ -103,7 +103,6 @@ A typical entity can be declared as:
 final class User
 {
     #[Id]
-    #[GeneratedValue]
     #[Column]
     public ?int $id = null;
 

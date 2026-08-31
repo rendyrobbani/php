@@ -103,7 +103,6 @@ Contoh:
 final class User
 {
     #[Id]
-    #[GeneratedValue]
     #[Column]
     public ?int $id = null;
 
