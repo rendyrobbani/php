@@ -28,10 +28,7 @@ class EntityInfoFactoryTest extends TestCase
 	{
 		$result = EntityInfoFactory::instance(EntityInfoFactoryTestEntity::class);
 
-		self::assertSame(
-			"users",
-			$result->table
-		);
+		self::assertSame("entity_info_factory_test", $result->table);
 	}
 
 	public function testInstanceReturnsFields(): void
@@ -145,7 +142,7 @@ class EntityInfoFactoryTest extends TestCase
 	}
 }
 
-#[Entity(table: "users")]
+#[Entity(table: "entity_info_factory_test")]
 final class EntityInfoFactoryTestEntity
 {
 	#[Id(isGeneratedValue: true)]
@@ -159,7 +156,7 @@ final class EntityInfoFactoryTestEntity
 	public string|null $email;
 }
 
-#[Entity(table: "users")]
+#[Entity(table: "entity_info_factory_test")]
 final class EntityInfoFactoryTestEntityWithoutColumn
 {
 	#[Id(isGeneratedValue: true)]
@@ -179,7 +176,7 @@ final class EntityInfoFactoryTestEntityWithoutEntityAttribute
 	public int|null $id;
 }
 
-#[Entity(table: "users")]
+#[Entity(table: "entity_info_factory_test")]
 final class EntityInfoFactoryTestEntityWithoutId
 {
 	#[Column(name: "name", type: "varchar", size: "255")]

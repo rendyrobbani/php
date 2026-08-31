@@ -10,58 +10,58 @@ class ComponentFactoryTest extends TestCase
 {
 	public function testBuildClass(): void
 	{
-		$result = ComponentFactory::instance(BuildableComponent::class);
-		self::assertInstanceOf(BuildableComponent::class, $result);
+		$result = ComponentFactory::instance(ComponentFactoryBuildableComponent::class);
+		self::assertInstanceOf(ComponentFactoryBuildableComponent::class, $result);
 	}
 
 	public function testBuildThrowsAttributeNotFoundException(): void
 	{
 		$this->expectException(AttributeNotFoundException::class);
-		ComponentFactory::instance(ComponentWithoutAttribute::class);
+		ComponentFactory::instance(ComponentFactoryWithoutAttribute::class);
 	}
 
 	public function testBuildInterface(): void
 	{
-		$result = ComponentFactory::instance(BuildableInterface::class);
-		self::assertInstanceOf(BuildableInterface::class, $result);
-		self::assertInstanceOf(BuildableInterfaceImpl::class, $result);
+		$result = ComponentFactory::instance(ComponentFactoryBuildableInterface::class);
+		self::assertInstanceOf(ComponentFactoryBuildableInterface::class, $result);
+		self::assertInstanceOf(ComponentFactoryBuildableInterfaceImpl::class, $result);
 	}
 
 	public function testBuildInterfaceThrowsImplementationClassNotFoundException(): void
 	{
 		$this->expectException(ImplementationClassNotFoundException::class);
-		ComponentFactory::instance(InterfaceWithoutImplementation::class);
+		ComponentFactory::instance(ComponentFactoryInterfaceWithoutImplementation::class);
 	}
 
 	public function testBuildClassReturnsNewInstance(): void
 	{
-		$first = ComponentFactory::instance(BuildableComponent::class);
-		$second = ComponentFactory::instance(BuildableComponent::class);
-		self::assertInstanceOf(BuildableComponent::class, $first);
-		self::assertInstanceOf(BuildableComponent::class, $second);
+		$first = ComponentFactory::instance(ComponentFactoryBuildableComponent::class);
+		$second = ComponentFactory::instance(ComponentFactoryBuildableComponent::class);
+		self::assertInstanceOf(ComponentFactoryBuildableComponent::class, $first);
+		self::assertInstanceOf(ComponentFactoryBuildableComponent::class, $second);
 		self::assertNotSame($first, $second);
 	}
 }
 
 #[Component]
-final class BuildableComponent
+final class ComponentFactoryBuildableComponent
 {
 }
 
-final class ComponentWithoutAttribute
-{
-}
-
-#[Component]
-interface BuildableInterface
-{
-}
-
-final class BuildableInterfaceImpl implements BuildableInterface
+final class ComponentFactoryWithoutAttribute
 {
 }
 
 #[Component]
-interface InterfaceWithoutImplementation
+interface ComponentFactoryBuildableInterface
+{
+}
+
+final class ComponentFactoryBuildableInterfaceImpl implements ComponentFactoryBuildableInterface
+{
+}
+
+#[Component]
+interface ComponentFactoryInterfaceWithoutImplementation
 {
 }

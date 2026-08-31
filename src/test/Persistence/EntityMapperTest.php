@@ -143,7 +143,7 @@ class EntityMapperTest extends TestCase
 	}
 }
 
-#[Entity(table: "users")]
+#[Entity(table: "entity_mapper_test")]
 final class EntityMapperTestEntity
 {
 	#[Id(isGeneratedValue: true)]

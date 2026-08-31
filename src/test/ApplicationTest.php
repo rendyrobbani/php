@@ -219,15 +219,15 @@ class ApplicationTest extends TestCase
 
 	public function testGetEntityInfoReturnsEntityInfo(): void
 	{
-		$entityInfo = Application::getEntityInfo(TestEntity::class);
+		$entityInfo = Application::getEntityInfo(ApplicationTestEntity::class);
 
 		$this->assertSame(
-			TestEntity::class,
+			ApplicationTestEntity::class,
 			$entityInfo->class
 		);
 
 		$this->assertSame(
-			'test_entities',
+			'application_test',
 			$entityInfo->table
 		);
 
@@ -244,8 +244,8 @@ class ApplicationTest extends TestCase
 
 	public function testGetEntityInfoCachesResult(): void
 	{
-		$entityInfo1 = Application::getEntityInfo(TestEntity::class);
-		$entityInfo2 = Application::getEntityInfo(TestEntity::class);
+		$entityInfo1 = Application::getEntityInfo(ApplicationTestEntity::class);
+		$entityInfo2 = Application::getEntityInfo(ApplicationTestEntity::class);
 
 		$this->assertSame(
 			$entityInfo1,
@@ -255,8 +255,8 @@ class ApplicationTest extends TestCase
 
 	public function testGetEntityInfoReturnsDifferentInfoForDifferentEntity(): void
 	{
-		$entityInfo1 = Application::getEntityInfo(TestEntity::class);
-		$entityInfo2 = Application::getEntityInfo(AnotherTestEntity::class);
+		$entityInfo1 = Application::getEntityInfo(ApplicationTestEntity::class);
+		$entityInfo2 = Application::getEntityInfo(AnotherApplicationTestEntity::class);
 
 		$this->assertNotSame(
 			$entityInfo1,
@@ -264,40 +264,40 @@ class ApplicationTest extends TestCase
 		);
 
 		$this->assertSame(
-			TestEntity::class,
+			ApplicationTestEntity::class,
 			$entityInfo1->class
 		);
 
 		$this->assertSame(
-			AnotherTestEntity::class,
+			AnotherApplicationTestEntity::class,
 			$entityInfo2->class
 		);
 	}
 
 	public function testGetRepositoryInfoReturnsRepositoryInfo(): void
 	{
-		$repositoryInfo = Application::getRepositoryInfo(TestRepository::class);
+		$repositoryInfo = Application::getRepositoryInfo(ApplicationTestRepository::class);
 
 		$this->assertSame(
-			TestRepository::class,
+			ApplicationTestRepository::class,
 			$repositoryInfo->class
 		);
 
 		$this->assertSame(
-			TestEntity::class,
+			ApplicationTestEntity::class,
 			$repositoryInfo->entityInfo->class
 		);
 
 		$this->assertSame(
-			'test_entities',
+			'application_test',
 			$repositoryInfo->entityInfo->table
 		);
 	}
 
 	public function testGetRepositoryInfoCachesResult(): void
 	{
-		$repositoryInfo1 = Application::getRepositoryInfo(TestRepository::class);
-		$repositoryInfo2 = Application::getRepositoryInfo(TestRepository::class);
+		$repositoryInfo1 = Application::getRepositoryInfo(ApplicationTestRepository::class);
+		$repositoryInfo2 = Application::getRepositoryInfo(ApplicationTestRepository::class);
 
 		$this->assertSame(
 			$repositoryInfo1,
@@ -307,10 +307,10 @@ class ApplicationTest extends TestCase
 
 	public function testGetRepositoryInfoUsesEntityFromRepositoryAttribute(): void
 	{
-		$repositoryInfo = Application::getRepositoryInfo(TestRepository::class);
+		$repositoryInfo = Application::getRepositoryInfo(ApplicationTestRepository::class);
 
 		$this->assertSame(
-			TestEntity::class,
+			ApplicationTestEntity::class,
 			$repositoryInfo->entityInfo->class
 		);
 	}
@@ -319,8 +319,8 @@ class ApplicationTest extends TestCase
 /**
  * Test Entity
  */
-#[Entity(table: 'test_entities')]
-class TestEntity
+#[Entity(table: 'application_test')]
+class ApplicationTestEntity
 {
 	#[Id]
 	#[Column(name: 'id')]
@@ -333,8 +333,8 @@ class TestEntity
 /**
  * Another Test Entity
  */
-#[Entity(table: 'another_test_entities')]
-class AnotherTestEntity
+#[Entity(table: 'another_application_test')]
+class AnotherApplicationTestEntity
 {
 	#[Id]
 	#[Column(name: 'id')]
@@ -344,7 +344,7 @@ class AnotherTestEntity
 /**
  * Test Repository
  */
-#[Repository(entity: TestEntity::class)]
-class TestRepository
+#[Repository(entity: ApplicationTestEntity::class)]
+class ApplicationTestRepository
 {
 }

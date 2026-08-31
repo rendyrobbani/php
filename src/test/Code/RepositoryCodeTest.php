@@ -33,7 +33,7 @@ class RepositoryCodeTest extends TestCase
 	public function testCodeGeneratesRepositoryInterface(): void
 	{
 		$result = $this->repositoryCode->code(
-			EntityInfoTestEntity::class,
+			RepositoryCodeTestEntity::class,
 			"App\\Repository"
 		);
 
@@ -43,7 +43,7 @@ class RepositoryCodeTest extends TestCase
 		);
 
 		self::assertStringContainsString(
-			"interface EntityInfoTestRepository",
+			"interface RepositoryCodeTestRepository",
 			$result
 		);
 	}
@@ -51,12 +51,12 @@ class RepositoryCodeTest extends TestCase
 	public function testCodeGeneratesRepositoryAttribute(): void
 	{
 		$result = $this->repositoryCode->code(
-			EntityInfoTestEntity::class,
+			RepositoryCodeTestEntity::class,
 			"App\\Repository"
 		);
 
 		self::assertStringContainsString(
-			"#[Repository(entity: EntityInfoTestEntity::class)]",
+			"#[Repository(entity: RepositoryCodeTestEntity::class)]",
 			$result
 		);
 	}
@@ -64,7 +64,7 @@ class RepositoryCodeTest extends TestCase
 	public function testCodeImportsRepository(): void
 	{
 		$result = $this->repositoryCode->code(
-			EntityInfoTestEntity::class,
+			RepositoryCodeTestEntity::class,
 			"App\\Repository"
 		);
 
@@ -77,12 +77,12 @@ class RepositoryCodeTest extends TestCase
 	public function testCodeImportsEntityWhenNamespaceIsDifferent(): void
 	{
 		$result = $this->repositoryCode->code(
-			EntityInfoTestEntity::class,
+			RepositoryCodeTestEntity::class,
 			"App\\Repository"
 		);
 
 		self::assertStringContainsString(
-			"use RendyRobbani\\PHP\\Code\\EntityInfoTestEntity;",
+			"use RendyRobbani\\PHP\\Code\\RepositoryCodeTestEntity;",
 			$result
 		);
 	}
@@ -90,12 +90,12 @@ class RepositoryCodeTest extends TestCase
 	public function testCodeDoesNotImportEntityWhenNamespaceIsTheSame(): void
 	{
 		$result = $this->repositoryCode->code(
-			EntityInfoTestEntity::class,
+			RepositoryCodeTestEntity::class,
 			"RendyRobbani\\PHP\\Code"
 		);
 
 		self::assertStringNotContainsString(
-			"use RendyRobbani\\PHP\\Code\\EntityInfoTestEntity;",
+			"use RendyRobbani\\PHP\\Code\\RepositoryCodeTestEntity;",
 			$result
 		);
 	}
@@ -103,7 +103,7 @@ class RepositoryCodeTest extends TestCase
 	public function testCodeGeneratesFindAll(): void
 	{
 		$result = $this->repositoryCode->code(
-			EntityInfoTestEntity::class,
+			RepositoryCodeTestEntity::class,
 			"App\\Repository"
 		);
 
@@ -116,12 +116,12 @@ class RepositoryCodeTest extends TestCase
 	public function testCodeGeneratesFindById(): void
 	{
 		$result = $this->repositoryCode->code(
-			EntityInfoTestEntity::class,
+			RepositoryCodeTestEntity::class,
 			"App\\Repository"
 		);
 
 		self::assertStringContainsString(
-			"function findById(int \$id): EntityInfoTestEntity|null;",
+			"function findById(int \$id): RepositoryCodeTestEntity|null;",
 			$result
 		);
 	}
@@ -129,12 +129,12 @@ class RepositoryCodeTest extends TestCase
 	public function testCodeGeneratesSave(): void
 	{
 		$result = $this->repositoryCode->code(
-			EntityInfoTestEntity::class,
+			RepositoryCodeTestEntity::class,
 			"App\\Repository"
 		);
 
 		self::assertStringContainsString(
-			"function save(EntityInfoTestEntity \$entity): EntityInfoTestEntity;",
+			"function save(RepositoryCodeTestEntity \$entity): RepositoryCodeTestEntity;",
 			$result
 		);
 	}
@@ -142,7 +142,7 @@ class RepositoryCodeTest extends TestCase
 	public function testCodeGeneratesDeleteAll(): void
 	{
 		$result = $this->repositoryCode->code(
-			EntityInfoTestEntity::class,
+			RepositoryCodeTestEntity::class,
 			"App\\Repository"
 		);
 
@@ -155,7 +155,7 @@ class RepositoryCodeTest extends TestCase
 	public function testCodeGeneratesDeleteById(): void
 	{
 		$result = $this->repositoryCode->code(
-			EntityInfoTestEntity::class,
+			RepositoryCodeTestEntity::class,
 			"App\\Repository"
 		);
 
@@ -168,35 +168,35 @@ class RepositoryCodeTest extends TestCase
 	public function testCodeGeneratesCompleteRepository(): void
 	{
 		$result = $this->repositoryCode->code(
-			EntityInfoTestEntity::class,
+			RepositoryCodeTestEntity::class,
 			"App\\Repository"
 		);
 
 		self::assertSame(
 			"namespace App\\Repository;
 
-use RendyRobbani\\PHP\\Code\\EntityInfoTestEntity;
+use RendyRobbani\\PHP\\Code\\RepositoryCodeTestEntity;
 use RendyRobbani\\PHP\\Persistence\\Repository;
 
-#[Repository(entity: EntityInfoTestEntity::class)]
-interface EntityInfoTestRepository
+#[Repository(entity: RepositoryCodeTestEntity::class)]
+interface RepositoryCodeTestRepository
 {
 	/**
-	 * @return EntityInfoTestEntity[]
+	 * @return RepositoryCodeTestEntity[]
 	 */
 	function findAll(): array;
 
 	/**
 	 * @param int \$id
-	 * @return EntityInfoTestEntity|null
+	 * @return RepositoryCodeTestEntity|null
 	 */
-	function findById(int \$id): EntityInfoTestEntity|null;
+	function findById(int \$id): RepositoryCodeTestEntity|null;
 
 	/**
-	 * @param EntityInfoTestEntity \$entity
-	 * @return EntityInfoTestEntity
+	 * @param RepositoryCodeTestEntity \$entity
+	 * @return RepositoryCodeTestEntity
 	 */
-	function save(EntityInfoTestEntity \$entity): EntityInfoTestEntity;
+	function save(RepositoryCodeTestEntity \$entity): RepositoryCodeTestEntity;
 
 	/**
 	 * @return void
@@ -214,8 +214,8 @@ interface EntityInfoTestRepository
 	}
 }
 
-#[Entity(table: "entity_info_test")]
-final class EntityInfoTestEntity
+#[Entity(table: "repository_code_test")]
+final class RepositoryCodeTestEntity
 {
 	#[Id(isGeneratedValue: true)]
 	#[Column(name: "id", type: "int")]
