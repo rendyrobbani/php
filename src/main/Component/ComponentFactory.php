@@ -3,10 +3,12 @@
 namespace RendyRobbani\PHP\Component;
 
 use RendyRobbani\PHP\Application;
+use RendyRobbani\PHP\Code\RepositoryImplCode;
 use RendyRobbani\PHP\Configuration\Configuration;
 use RendyRobbani\PHP\Exception\AttributeNotFoundException;
 use RendyRobbani\PHP\Exception\ImplementationClassNotFoundException;
 use RendyRobbani\PHP\Exception\UnresolvableConstructorParameterException;
+use RendyRobbani\PHP\Persistence\Repository;
 
 final class ComponentFactory
 {
@@ -69,6 +71,10 @@ final class ComponentFactory
 	{
 		$classImpl = $reflectionClass->getName() . "Impl";
 		if (class_exists($classImpl)) return self::instanceClass(Application::getReflectionClass($classImpl));
+		if ($reflectionClass->getAttributes(Repository::class)) {
+			eval(Application::getComponent(RepositoryImplCode::class)->code($reflectionClass->getName()));
+			return self::instanceClass(Application::getReflectionClass($classImpl));
+		}
 		throw new ImplementationClassNotFoundException($classImpl);
 	}
 }

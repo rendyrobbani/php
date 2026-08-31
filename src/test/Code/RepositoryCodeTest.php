@@ -176,8 +176,10 @@ class RepositoryCodeTest extends TestCase
 			"namespace App\\Repository;
 
 use RendyRobbani\\PHP\\Code\\RepositoryCodeTestEntity;
+use RendyRobbani\\PHP\\Component\\Component;
 use RendyRobbani\\PHP\\Persistence\\Repository;
 
+#[Component]
 #[Repository(entity: RepositoryCodeTestEntity::class)]
 interface RepositoryCodeTestRepository
 {

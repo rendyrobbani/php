@@ -9,6 +9,7 @@ use RendyRobbani\PHP\Exception\MethodNameParameterMismatchException;
 use RendyRobbani\PHP\Exception\QueryStringConversionException;
 use RendyRobbani\PHP\Persistence\EntityInfo;
 use RendyRobbani\PHP\Persistence\EntityMapper;
+use RendyRobbani\PHP\Persistence\FieldInfo;
 
 #[Component]
 final class RepositoryImplCode extends AbstractCode
@@ -49,7 +50,7 @@ final class RepositoryImplCode extends AbstractCode
 		$code[] = "";
 		$code[] = "final readonly class $repositoryImplName implements $repositoryName";
 		$code[] = "{";
-		$code[] = "\t" . $this->constructor(array_diff($imports, [$entityInfo->class]));
+		$code[] = "\t" . $this->constructor(array_values(array_diff($imports, [$entityInfo->class])));
 
 		foreach ($repositoryReflection->getMethods() as $method) {
 			$params = implode(", ", array_map(fn($param) => $this->methodType($param->getType()) . " \$" . lcfirst($param->getName()), $method->getParameters()));
@@ -261,9 +262,8 @@ final class RepositoryImplCode extends AbstractCode
 	}
 
 	/**
-	 * @param EntityInfo $entityInfo
-	 * @param RepositoryImplCodeInfo[] $where_infos
-	 * @param RepositoryImplCodeInfo[] $order_infos
+	 * @param \ReflectionMethod $method
+	 * @param FieldInfo[] $where_field
 	 * @return string
 	 */
 	private function bindPDO(\ReflectionMethod $method, array $where_field): string

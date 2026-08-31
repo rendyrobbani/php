@@ -20,6 +20,7 @@ final class RepositoryCode extends AbstractCode
 	public function code(string $entityClass, string $namespace = ""): string
 	{
 		$imports = [];
+		$imports[] = Component::class;
 		$imports[] = Repository::class;
 
 		$entityInfo = Application::getEntityInfo($entityClass);
@@ -40,6 +41,7 @@ final class RepositoryCode extends AbstractCode
 		}
 
 		$code[] = "";
+		$code[] = "#[Component]";
 		$code[] = "#[Repository(entity: $entityName::class)]";
 		$code[] = "interface $repositoryName";
 		$code[] = "{";
