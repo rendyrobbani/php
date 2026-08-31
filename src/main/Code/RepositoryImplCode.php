@@ -31,7 +31,7 @@ final class RepositoryImplCode extends AbstractCode
 
 		$entityInfo = $repositoryInfo->entityInfo;
 
-		$repositoryImplName = $this->repositoryImplName($repositoryInfo->entityInfo->table);
+		$repositoryImplName = $repositoryReflection->getShortName() . "Impl";
 
 		if ($repositoryReflection->getNamespaceName() !== Application::getReflectionClass($entityInfo->class)->getNamespaceName()) {
 			$imports[] = $entityInfo->class;

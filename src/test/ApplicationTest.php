@@ -3,6 +3,7 @@
 namespace RendyRobbani\PHP;
 
 use PHPUnit\Framework\TestCase;
+use RendyRobbani\PHP\Component\Component;
 use RendyRobbani\PHP\Exception\ConfigValueNotFoundException;
 use RendyRobbani\PHP\File\FileReader;
 use RendyRobbani\PHP\Persistence\Column;
@@ -314,6 +315,30 @@ class ApplicationTest extends TestCase
 			$repositoryInfo->entityInfo->class
 		);
 	}
+
+	public function testGetComponentCanCreateRepositoryInterfaceInstance(): void
+	{
+		Application::setConfig(__DIR__ . "/../../res/application.json");
+		self::assertFalse(
+			class_exists(ApplicationTestRepositoryInterface::class . 'Impl', false)
+		);
+
+		$repository = Application::getComponent(ApplicationTestRepositoryInterface::class);
+
+		self::assertInstanceOf(
+			ApplicationTestRepositoryInterface::class,
+			$repository
+		);
+
+		self::assertSame(
+			ApplicationTestRepositoryInterface::class . 'Impl',
+			$repository::class
+		);
+
+		self::assertTrue(
+			class_exists(ApplicationTestRepositoryInterface::class . 'Impl', false)
+		);
+	}
 }
 
 /**
@@ -347,4 +372,14 @@ class AnotherApplicationTestEntity
 #[Repository(entity: ApplicationTestEntity::class)]
 class ApplicationTestRepository
 {
+}
+
+#[Component]
+#[Repository(entity: ApplicationTestEntity::class)]
+interface ApplicationTestRepositoryInterface
+{
+	/**
+	 * @return ApplicationTestEntity[]
+	 */
+	public function findAll(): array;
 }
