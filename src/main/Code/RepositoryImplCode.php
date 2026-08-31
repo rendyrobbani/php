@@ -120,11 +120,12 @@ final class RepositoryImplCode extends AbstractCode
 	}
 
 	/**
-	 * @param \ReflectionNamedType|\ReflectionUnionType|\ReflectionIntersectionType $type
+	 * @param \ReflectionNamedType|\ReflectionUnionType|\ReflectionIntersectionType|null $type
 	 * @return string
 	 */
-	private function methodType(\ReflectionNamedType|\ReflectionUnionType|\ReflectionIntersectionType $type): string
+	private function methodType(\ReflectionNamedType|\ReflectionUnionType|\ReflectionIntersectionType|null $type): string
 	{
+		if ($type === null) return "mixed";
 		$name = $type->getName();
 		if (!$type->isBuiltin()) {
 			if (!str_contains($name, "\\")) $name = "\\" . $name;
@@ -213,11 +214,13 @@ final class RepositoryImplCode extends AbstractCode
 		return $infos;
 	}
 
-	private function typePDO(\ReflectionNamedType|\ReflectionUnionType|\ReflectionIntersectionType $type): string
+	private function typePDO(\ReflectionNamedType|\ReflectionUnionType|\ReflectionIntersectionType|null $type): string
 	{
-		if ($type->getName() === "string") return "\\PDO::PARAM_STR";
-		if ($type->getName() === "bool") return "\\PDO::PARAM_BOOL";
-		if ($type->getName() === "int") return "\\PDO::PARAM_INT";
+		if ($type !== null) {
+			if ($type->getName() === "string") return "\\PDO::PARAM_STR";
+			if ($type->getName() === "bool") return "\\PDO::PARAM_BOOL";
+			if ($type->getName() === "int") return "\\PDO::PARAM_INT";
+		}
 		return "\\PDO::PARAM_STR";
 	}
 
