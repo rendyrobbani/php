@@ -338,7 +338,7 @@ final class RepositoryImplCode extends AbstractCode
 				$typePDO = $this->typePDO($field->property->getType());
 				$code[] = "\t" . "\t" . "\$statement->bindValue(\"{$field->column->name}\", $namePHP, $typePDO);";
 			} else {
-				$entityMethod = $entityMethods["get" . ucfirst($field->property->name)] ?? null;
+				$entityMethod = $entityMethods[$field->property->name] ?? $entityMethods["get" . ucfirst($field->property->name)] ?? null;
 				if ($entityMethod !== null) {
 					$namePHP = "\$" . $method->getParameters()[0]->name . "->{$entityMethod->getName()}()";
 
