@@ -351,8 +351,17 @@ final class RepositoryImplCode extends AbstractCode
 
 		if ($entityInfo->fieldId->id?->isGeneratedValue) {
 			$code[] = "";
-			$code[] = "\t" . "\t" . "if (\$" . $method->getParameters()[0]->name . "->{$entityInfo->fieldId->property->getName()} === null) {";
-			$code[] = "\t" . "\t" . "\t" . "\$" . $method->getParameters()[0]->name . "->{$entityInfo->fieldId->property->getName()} = \$this->connection->lastInsertId();";
+
+			if ($entityInfo->fieldId->property->isPublic()) {
+				$code[] = "\t" . "\t" . "if (\$" . $method->getParameters()[0]->name . "->{$entityInfo->fieldId->property->getName()} === null) {";
+				$code[] = "\t" . "\t" . "\t" . "\$" . $method->getParameters()[0]->name . "->{$entityInfo->fieldId->property->getName()} = \$this->connection->lastInsertId();";
+			} else {
+				$getterMethod = $entityMethods[$entityInfo->fieldId->property->name] ?? $entityMethods["get" . ucfirst($entityInfo->fieldId->property->name)] ?? null;
+				$setterMethod = $entityMethods["set" . ucfirst($entityInfo->fieldId->property->name)];
+
+				$code[] = "\t" . "\t" . "if (\$" . $method->getParameters()[0]->name . "->{$getterMethod->getName()}() === null) {";
+				$code[] = "\t" . "\t" . "\t" . "\$" . $method->getParameters()[0]->name . "->{$setterMethod->getName()}(\$this->connection->lastInsertId());";
+			}
 			$code[] = "\t" . "\t" . "}";
 		}
 
