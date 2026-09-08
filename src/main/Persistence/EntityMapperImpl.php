@@ -13,9 +13,17 @@ class EntityMapperImpl implements EntityMapper
 	function toEntity(array $row, string $class)
 	{
 		$entityInfo = Application::getEntityInfo($class);
+		$methods = Application::getReflectionClass($class)->getMethods();
+		$methods = array_combine(array_map(fn($method) => $method->getName(), $methods), $methods);
 		$row = array_combine(array_keys($row), array_values($row));
 		$entity = new $class();
-		foreach ($entityInfo->fields as $field) $entity->{$field->property->name} = $row[$field->column->name] ?? null;
+		foreach ($entityInfo->fields as $field) {
+			if ($field->property->isPublic()) $entity->{$field->property->name} = $row[$field->column->name] ?? null;
+			else {
+				$method = $methods["set" . ucfirst($field->property->name)] ?? null;
+				$method?->invoke($entity, $row[$field->column->name] ?? null);
+			}
+		}
 		return $entity;
 	}
 
