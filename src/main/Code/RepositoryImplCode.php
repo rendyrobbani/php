@@ -328,11 +328,24 @@ final class RepositoryImplCode extends AbstractCode
 		$code[] = "";
 		$code[] = "\t" . "\t" . "\$statement = \$this->connection->prepare(\$sql);";
 
-		foreach ($entityInfo->fields as $field) {
-			$namePHP = "\$" . $method->getParameters()[0]->name . "->{$field->property->getName()}";
+		$entityMethods = Application::getReflectionClass($entityInfo->class)->getMethods();
+		$entityMethods = array_combine(array_map(fn($entityMethod) => $entityMethod->getName(), $entityMethods), $entityMethods);
 
-			$typePDO = $this->typePDO($field->property->getType());
-			$code[] = "\t" . "\t" . "\$statement->bindValue(\"{$field->column->name}\", $namePHP, $typePDO);";
+		foreach ($entityInfo->fields as $field) {
+			if ($field->property->isPublic()) {
+				$namePHP = "\$" . $method->getParameters()[0]->name . "->{$field->property->getName()}";
+
+				$typePDO = $this->typePDO($field->property->getType());
+				$code[] = "\t" . "\t" . "\$statement->bindValue(\"{$field->column->name}\", $namePHP, $typePDO);";
+			} else {
+				$entityMethod = $entityMethods["get" . ucfirst($field->property->name)] ?? null;
+				if ($entityMethod !== null) {
+					$namePHP = "\$" . $method->getParameters()[0]->name . "->{$entityMethod->getName()}()";
+
+					$typePDO = $this->typePDO($entityMethod->getReturnType());
+					$code[] = "\t" . "\t" . "\$statement->bindValue(\"{$field->column->name}\", $namePHP, $typePDO);";
+				}
+			}
 		}
 		$code[] = "\t" . "\t" . "\$statement->execute();";
 
