@@ -2,6 +2,7 @@
 
 namespace RendyRobbani\PHP\Connection;
 
+use Pdo\Mysql;
 use RendyRobbani\PHP\Component\Component;
 use RendyRobbani\PHP\Configuration\Configuration;
 
@@ -20,9 +21,12 @@ final class Connection extends \PDO
 	                            #[Configuration(key: "database.password")] public string $password)
 	{
 		parent::__construct(
-			dsn: "mysql:host=$this->host;dbname=$this->database",
+			dsn: "mysql:host=$this->host;dbname=$this->database;charset=utf8mb4",
 			username: $this->username,
 			password: $this->password,
+			options: [
+				\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+			],
 		);
 	}
 }
